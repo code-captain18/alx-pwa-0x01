@@ -1,10 +1,12 @@
+# MoviesDatabase API Documentation
+
 ## API Overview
 
 The MoviesDatabase API provides access to a vast collection of data on over 9 million titles including movies, series, and episodes, as well as 11 million actors, crew, and cast members. It offers rich metadata such as YouTube trailer URLs, awards, biographies, and other useful details. This API is ideal for developers building entertainment-related applications that require comprehensive and up-to-date movie and TV information.
 
 ## API Version
 
-Version: v1
+**Version:** v1
 
 ## Available Endpoints
 
@@ -42,8 +44,11 @@ GET https://moviesdatabase.p.rapidapi.com/titles/search/title/Inception
 
 X-RapidAPI-Key: YOUR_API_KEY
 X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
+```
 
 ### Example Response
+
+```json
 {
   "results": [
     {
@@ -60,6 +65,7 @@ X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
     }
   ]
 }
+```
 
 ## Authentication
 
@@ -70,10 +76,14 @@ To access the MoviesDatabase API, you must authenticate your requests using Rapi
 - `X-RapidAPI-Key`: Your unique API key provided by RapidAPI after subscribing to the MoviesDatabase API.
 - `X-RapidAPI-Host`: The host name for the API, which should be set to `moviesdatabase.p.rapidapi.com`.
 
-### Example
+### Example Authentication
 
 ```http
 GET https://moviesdatabase.p.rapidapi.com/titles/search/title/Inception
+
+X-RapidAPI-Key: YOUR_API_KEY
+X-RapidAPI-Host: moviesdatabase.p.rapidapi.com
+```
 
 ## Error Handling
 
