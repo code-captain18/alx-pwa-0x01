@@ -17,9 +17,20 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": [
-        "./*"
+        "*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/interfaces": [
+        "interfaces"
+      ],
+      "@/styles/*": [
+        "styles/*"
       ]
     }
   },
