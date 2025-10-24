@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Manifest</title>
+</head>
+
+<body>
+    <h1>Testing Manifest Access</h1>
+    <script>
+        fetch('/manifest.json')
+            .then(response => {
+                if (response.ok) {
+                    console.log('✅ Manifest fetch successful');
+                    return response.json();
+                } else {
+                    console.error('❌ Manifest fetch failed:', response.status);
+                }
+            })
+            .then(data => {
+                console.log('Manifest data:', data);
+            })
+            .catch(error => {
+                console.error('❌ Manifest fetch error:', error);
+            });
+    </script>
+</body>
+
+</html>
