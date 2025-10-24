@@ -19,28 +19,33 @@ const Movies: React.FC<MProps> = () => {
 
     const fetchMovies = useCallback(async () => {
         setLoading(true)
-        const response = await fetch('/api/fetch-movies', {
-            method: 'POST',
-            body: JSON.stringify({
-                page,
-                year,
-                genre: genre === "All" ? "" : genre
-            }),
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8'
+        try {
+            const response = await fetch('/api/fetch-movies', {
+                method: 'POST',
+                body: JSON.stringify({
+                    page,
+                    year,
+                    genre: genre === "All" ? "" : genre
+                }),
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                }
+            })
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`)
             }
-        })
 
-        if (!response.ok) {
+            const data = await response.json()
+            const results = data.movies || []
+            console.log(results)
+            setMovies(results)
+        } catch (error) {
+            console.error('Failed to fetch movies:', error)
+            setMovies([])
+        } finally {
             setLoading(false)
-            throw new Error("Something went wrong")
         }
-
-        const data = await response.json()
-        const results = data.movies
-        console.log(results)
-        setMovies(results)
-        setLoading(false)
     }, [page, year, genre])
 
 
@@ -63,12 +68,12 @@ const Movies: React.FC<MProps> = () => {
 
                     <select
                         onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setYear(Number(event.target.value))}
-                        className="border-2 border-[#E2D609] outline-none bg-transparent px-4 md:px-8 py-2 mt-4 md:mt-0 rounded-full w-full md:w-auto"
+                        className="border-2 border-[#E2D609] outline-none bg-[#110F17] text-white px-4 md:px-8 py-2 mt-4 md:mt-0 rounded-full w-full md:w-auto"
                     >
-                        <option value="">Select Year</option>
+                        <option value="" className="bg-[#110F17] text-white">Select Year</option>
                         {
                             [2024, 2023, 2022, 2021, 2020, 2019].map((year: number) => (
-                                <option value={year} key={year}>{year}</option>
+                                <option value={year} key={year} className="bg-[#110F17] text-white">{year}</option>
                             ))
                         }
                     </select>
@@ -89,14 +94,18 @@ const Movies: React.FC<MProps> = () => {
                 {/* Movies output */}
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mt-10">
                     {
-                        movies?.map((movie: MoviesProps, key: number) => (
+                        movies?.length > 0 ? movies.map((movie: MoviesProps, key: number) => (
                             <MovieCard
-                                title={movie?.titleText.text}
-                                posterImage={movie?.primaryImage?.url}
-                                releaseYear={movie?.releaseYear.year}
-                                key={key}
+                                title={movie?.titleText?.text || 'Unknown Title'}
+                                posterImage={movie?.primaryImage?.url || '/placeholder-movie.jpg'}
+                                releaseYear={movie?.releaseYear?.year || 'Unknown'}
+                                key={movie?.id || key}
                             />
-                        ))
+                        )) : !loading && (
+                            <div className="col-span-full text-center text-gray-400 py-10">
+                                No movies found. Try adjusting your filters.
+                            </div>
+                        )
                     }
                 </div>
                 <div className="flex justify-end space-x-4 mt-6">
